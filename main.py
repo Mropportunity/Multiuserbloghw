@@ -3,7 +3,7 @@ import os
 import jinja2
 import webapp2
 
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
+template_dir = os.path.join(os.path.dirname(__file__),'templates')
 Jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir),
                                autoescape=True)
 
@@ -37,6 +37,12 @@ class FizzBuzzHandler(Handler):
 
 
 class Rot13(Handler):
+    
+    def rot13(self, s):
+        substitute_table = string.maketrans(
+          "ABCDEFGHIJKLMabcdefghijklmNOPQRSTUVWXYZnopqrstuvwxyz",
+          "NOPQRSTUVWXYZnopqrstuvwxyzABCDEFGHIJKLMabcdefghijklm") 
+        return s.translate(substitute_table)
 
     def get(self):
         self.render('rot13-form.html')
@@ -50,7 +56,6 @@ class Rot13(Handler):
         self.render('rot13-form.html', text=rot13)
 
 app = webapp2.WSGIApplication([('/', MainPage),
-                               ('/fizzbuzz', FizzBuzzHandler),
                                ('/fizzbuzz', FizzBuzzHandler),
                                ('/unit2/rot13', Rot13),
                                ],
